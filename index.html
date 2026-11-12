@@ -1981,11 +1981,17 @@ ${clientUrl}
         input.value = '';
         saveState();
 
-        if (supabaseClient) {
-          try {
-            await supabaseClient.from('usuarios_taller').update({ password: newPwd }).eq('username', username);
-          } catch(e) {}
-        }
+    if (supabaseClient) {
+  const { error } = await supabaseClient
+    .from('usuarios_taller')
+    .update({ password: newPwd })
+    .eq('username', username);
+
+  if (error) {
+    alert('Error de Supabase: ' + error.message);
+    return;
+  }
+}
 
         alert(`Contraseña de @${username} actualizada.`);
       }
